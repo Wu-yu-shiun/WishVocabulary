@@ -4,9 +4,9 @@ from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import *
 import os
 
-# import configparser
-# config = configparser.ConfigParser()
-# config.read("config.ini")
+import configparser
+config = configparser.ConfigParser()
+config.read("config.ini")
 # line_bot_api = LineBotApi(config['line_bot']['channel_access_token'])
 # handler = WebhookHandler(config['line_bot']['channel_secret'])
 # line_bot_api.push_message(config['line_bot']['my_user_id'], TextSendMessage(text='你可以開始了'))
@@ -36,7 +36,7 @@ def callback():
 def handle_message(event):
     message = TextSendMessage(text=event.message.text)
     line_bot_api.reply_message(event.reply_token,message)
-    # print(config['line_bot']['channel_secret'])
+    print(config['line_bot']['channel_secret'])
 
 #主程式
 if __name__ == "__main__":
