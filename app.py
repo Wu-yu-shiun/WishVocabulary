@@ -11,15 +11,20 @@ import os
 # handler = WebhookHandler(config['line_bot']['channel_secret'])
 # line_bot_api.push_message(config['line_bot']['my_user_id'], TextSendMessage(text='你可以開始了'))
 
+line_bot_api = LineBotApi('K/NEmvRBi3EfdNVOWUGxmBLXSkE9iIYjz2SXUHV7ioYLfD6FuZe+Y8J7GwSQSDW2kK04+p73qdK97Q1PhCScwN/KdHvSmQRrnIzuZCeIYeSqkhOUvSIQd5uIhetQkrKEbQAh6ZaZL5txW62L6axetAdB04t89/1O/w1cDnyilFU=')
+handler = WebhookHandler('cb25265c3668e1983601ae8c62705ea3')
+line_bot_api.push_message('Udb21c2cdfce57278db519a0b88153d82', TextSendMessage(text='系統有更新！'))
+
 app = Flask(__name__)
 
-line_bot_api = LineBotApi(os.getenv('CHANNEL_ACCESS_TOKEN'))
-handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
-line_bot_api.push_message(os.getenv('MY_USER_ID'), TextSendMessage(text='你可以開始了'))
+# line_bot_api = LineBotApi(os.getenv('CHANNEL_ACCESS_TOKEN'))
+# handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
+# line_bot_api.push_message(os.getenv('MY_USER_ID'), TextSendMessage(text='系統有更新！'))
 
-# 監聽所有來自 / 的 Post Request
-@app.route("/", methods=['POST'])
+# 監聽所有來自 /callback 的 Post Request
+@app.route("/callback", methods=['POST'])
 def callback():
+    print("exe callback")
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
@@ -31,12 +36,25 @@ def callback():
     return 'OK'
 
 # 訊息傳遞區塊
-
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    message = TextSendMessage(text=event.message.text)
-    line_bot_api.reply_message(event.reply_token,message)
-    print(os.getenv('MY_USER_ID'))
+    msg=event.message.text
+    print(msg)
+    if msg == '[ 輸入單字 ]':
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='請開始輸入'))
+        # 進入輸入模式
+    elif  msg == '[ 查詢單字 ]':
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你要查詢哪一天？'))
+        # 跳出要查詢的時間選項
+        # 進入查詢模式
+    elif  msg == '[ 開始測驗 ]':
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你要測驗的範圍是？'))
+        # 跳出要考試的範圍選項
+        # 進入測驗模式
+    else :
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='Error'))
+    
+    
 
 #主程式
 if __name__ == "__main__":
