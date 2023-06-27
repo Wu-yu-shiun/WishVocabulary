@@ -47,7 +47,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你要查詢哪一天？'))
         # 跳出要查詢的時間選項
         # 進入查詢模式
-    elif  msg == '[ 開始測驗 ]':
+    elif  msg == '[ 我要測驗 ]':
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你要測驗的範圍是？'))
         # 跳出要考試的範圍選項
         # 進入測驗模式
