@@ -44,8 +44,18 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='請開始輸入'))
         # 進入輸入模式
     elif  msg == '[ 查詢單字 ]':
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你要查詢哪一天？'))
         # 跳出要查詢的時間選項
+        message=TextSendMessage(
+            text='你要查詢哪一天？',
+            quick_reply=QuickReply(
+                items=[
+                    QuickReplyButton(action=MessageAction(label="今日",text="查詢今日單字")),
+                    QuickReplyButton(action=MessageAction(label="昨日",text="查詢昨日單字")),
+                    QuickReplyButton(action=MessageAction(label="全部",text="查詢全部單字")),
+                ]
+            )
+        )
+        line_bot_api.reply_message(event.reply_token,message)
         # 進入查詢模式
     elif  msg == '[ 我要測驗 ]':
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你要測驗的範圍是？'))
