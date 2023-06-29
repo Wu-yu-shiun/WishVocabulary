@@ -21,11 +21,11 @@ def translate_word(word):
     translation = response.json()["data"]["translations"][0]["translatedText"]
     return translation
 
-def print_word_details(word):
+def deal_word(word):
     if is_english_word(word):
-        print(translate_word(word))
+        return translate_word(word)
     else:
-        print("不是英文單字。")
+        return None
 
 # print_word_details("wish")
 

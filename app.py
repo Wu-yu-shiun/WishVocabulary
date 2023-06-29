@@ -70,8 +70,11 @@ def handle_message(event):
         data=mongodb.get_oneday_data("test","db_230629")
         mongodb.add_word(data,55,"ant","螞蟻","urlll")
     else :
-        vocabulary.print_word_details(msg)
-       
+        result=vocabulary.deal_word(msg)
+        if result is None:
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非英文單字'))
+        else :
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text=result))
 
 #主程式
 if __name__ == "__main__":
