@@ -16,7 +16,8 @@ def get_oneday_data(user_id,date):
     return datalist
 
 def print(data):
-    for doc in data:
+    cursor=data.find({"Chinese":"吃"})
+    for doc in cursor:
         print(doc)
 
 
