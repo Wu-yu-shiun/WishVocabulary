@@ -15,6 +15,10 @@ def get_oneday_data(user_id,date):
     datalist=db[date]
     return datalist
 
+def print(data):
+    for doc in data:
+        print(doc)
+
 
 # 新增一筆
 # result=collection.insert_one({

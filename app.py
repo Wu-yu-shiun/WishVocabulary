@@ -67,7 +67,8 @@ def handle_message(event):
         # 跳出要考試的範圍選項
         # 進入測驗模式
     elif msg == 'db':
-        mongodb.get_oneday_data("test","db_230629")
+        data=mongodb.get_oneday_data("test","db_230629")
+        mongodb.print(data)
     else :
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='Error'))
     
