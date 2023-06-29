@@ -29,8 +29,8 @@ def add_word(data,number,english,chinese,pronunciation):
     })
     print("資料新增成功!id="+str(result.inserted_id))
 
-# data=get_oneday_data("test","db_230629")
-# add_word(data,55,"ant","螞蟻","urlll")
+data=get_oneday_data("test","db_230629")
+add_word(data,58,"ant","螞蟻","urlll")
 
 
 # uri = "mongodb+srv://vocab:nHKwiaM9WgcY28uG@mycluster.2jiwdws.mongodb.net/?retryWrites=true&w=majority"

@@ -4,6 +4,7 @@ from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import *
 import os
 import mongodb
+from pymongo.mongo_client import MongoClient
 
 # import configparser
 # config = configparser.ConfigParser()
