@@ -1,7 +1,8 @@
 line-bot-sdk==1.20.0
 pymongo==3.12.0
 dnspython==2.1.0
+nltk==3.6.3
+requests==2.26.0
 flask
-openai
 gunicorn
 bson

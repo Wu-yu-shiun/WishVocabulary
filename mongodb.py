@@ -9,29 +9,46 @@ def get_all_data(user_id):
 def get_oneday_data(user_id,date): 
     print("get one data")
     db=get_all_data(user_id)
-    datalist=db[date]
-    return datalist
+    allword=db[date]
+    return allword
 
-# def print(data):
-#     cursor=data.find({"Chinese":"吃"})
-#     for doc in cursor:
-#         print(doc)
+def print_allword(data):
+    cursor=data.find({})
+    for doc in cursor:
+        print(doc)
 
-# def get_one_word(data,e):
-
-def add_word(data,number,english,chinese,pronunciation):
-    print("新增中")
+def add_word(data,id,english,chinese,pronunciation):
     result=data.insert_one({
-        "number":number,
+        "id":id,
         "english":english,
         "chinese":chinese,
         "pronunciation":pronunciation,
     })
     print("資料新增成功!id="+str(result.inserted_id))
 
-data=get_oneday_data("test","db_230629")
-add_word(data,58,"ant","螞蟻","urlll")
+def delete_word(data,id):
+    result=data.delete_one({"id":id})
+    print("資料刪除成功!刪除了第"+str(id)+"筆資料")
 
+def delete_allword(data):
+    result=data.delete_many({})
+    print("資料刪除成功!共刪除了"+str(result.deleted_count)+"筆資料")
+
+def get_word(data,id):
+    word=data.find_one({"id":id})
+    return word
+
+
+
+
+data=get_oneday_data("test","db_230629")
+for i in range(1, 8):
+    add_word(data,i,"ant","螞蟻","urlll")
+# print_allword(data)
+# delete_allword(data)
+# delete_word(data,5)
+
+# -------------------------------------------------------------
 
 # uri = "mongodb+srv://vocab:nHKwiaM9WgcY28uG@mycluster.2jiwdws.mongodb.net/?retryWrites=true&w=majority"
 # client = MongoClient(uri)
@@ -46,10 +63,10 @@ add_word(data,58,"ant","螞蟻","urlll")
 # # })
 # # print("資料新增成功!id="+str(result.inserted_id))
 
-# # 找全部
-# cursor=collection.find({"Chinese":"吃"})
+# 找全部
+# cursor=collection.find({})
 # for doc in cursor:
-#     print(doc["English"])
+#     print(doc["english"])
 
 # 找一筆
 # from bson.objectid import ObjectId

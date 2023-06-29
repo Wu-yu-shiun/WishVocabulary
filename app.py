@@ -2,9 +2,8 @@ from flask import (Flask, request, abort)
 from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import *
-import os
-import mongodb
 from pymongo.mongo_client import MongoClient
+import os, mongodb, vocabulary, nltk, requests
 
 # import configparser
 # config = configparser.ConfigParser()
@@ -67,11 +66,11 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你要測驗的範圍是？'))
         # 跳出要考試的範圍選項
         # 進入測驗模式
-    elif msg == 'a':
+    elif msg == 'test':
         data=mongodb.get_oneday_data("test","db_230629")
         mongodb.add_word(data,55,"ant","螞蟻","urlll")
     else :
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='Error'))
+        vocabulary.print_word_details(msg)
        
 
 #主程式
