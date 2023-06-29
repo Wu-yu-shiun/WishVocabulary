@@ -66,13 +66,12 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你要測驗的範圍是？'))
         # 跳出要考試的範圍選項
         # 進入測驗模式
-    elif msg == 'db':
+    elif msg == 'a':
         data=mongodb.get_oneday_data("test","db_230629")
-        mongodb.print(data)
+        mongodb.add_word(data,55,"ant","螞蟻","urlll")
     else :
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='Error'))
-    
-    
+       
 
 #主程式
 if __name__ == "__main__":
