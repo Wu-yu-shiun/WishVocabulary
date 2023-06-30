@@ -41,9 +41,9 @@ def get_word(data,id):
 
 
 
-data=get_oneday_data("test","db_230629")
-for i in range(1, 8):
-    add_word(data,i,"ant","螞蟻","urlll")
+# data=get_oneday_data("test","db_230630")
+# for i in range(1, 8):
+#     add_word(data,i,"ant","螞蟻","urlll")
 # print_allword(data)
 # delete_allword(data)
 # delete_word(data,5)

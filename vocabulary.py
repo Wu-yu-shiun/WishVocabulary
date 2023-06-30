@@ -1,5 +1,6 @@
 import nltk
 import requests
+import re
 
 def is_english_word(word):
     nltk.download('words')
@@ -26,6 +27,10 @@ def deal_word(word):
         return translate_word(word)
     else:
         return None
+
+def is_chinese_word(text):
+    pattern = r'^[\u4e00-\u9fff]+$'  # 中文Unicode範圍
+    return bool(re.match(pattern, text))
 
 # print_word_details("wish")
 
