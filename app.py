@@ -107,6 +107,7 @@ def handle_message(event):
                 mode = 1.2
                 eng=msg
                 chi=result
+                print(mode,eng,chi)
 
     elif mode == 1.2:
         if msg == '[ 輸入單字 ]':
@@ -119,9 +120,11 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='已成功輸入！'))
             mode = 1.1
             eng = chi = ''
+            print(mode,eng,chi)
         elif msg == '[ 否 ]':
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='請重新輸入單字的中文'))
         elif vocabulary.is_chinese_word(msg):
+            chi = msg
             message = TemplateSendMessage(
                 alt_text='確認按鈕',
                 template=ConfirmTemplate(
@@ -138,6 +141,7 @@ def handle_message(event):
                     ]
                 )
             )
+            line_bot_api.reply_message(event.reply_token,message)
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非中文，請重新輸入'))
     
