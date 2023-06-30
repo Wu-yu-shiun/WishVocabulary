@@ -22,12 +22,14 @@ line_bot_api = LineBotApi(os.getenv('CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 line_bot_api.push_message(os.getenv('MY_USER_ID'), TextSendMessage(text='系統有更新！'))
 mode = 0  # 0:一般模式  1.1:輸入英文模式 1.2:輸入中文模式 2:查詢模式  3:測驗模式
-eng = chi = ''
+eng = ''
+chi = ''
 
 
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
+    global mode, chi, eng
     print("exe callback")
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
@@ -42,6 +44,7 @@ def callback():
 # 訊息傳遞區塊
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+    global mode, chi, eng
     msg=event.message.text
     profile = line_bot_api.get_profile(event.source.user_id)
     user_name = profile.display_name
