@@ -1,28 +1,27 @@
 from pymongo.mongo_client import MongoClient
 
-def get_all_data(user_id):
+def get_user_data(user_id):
     uri = "mongodb+srv://vocab:nHKwiaM9WgcY28uG@mycluster.2jiwdws.mongodb.net/?retryWrites=true&w=majority"
     client = MongoClient(uri)
-    db = client[user_id]
-    return db
+    userdata = client[user_id]
+    return userdata
 
 def get_oneday_data(user_id,date): 
-    print("get one data")
-    db=get_all_data(user_id)
-    allword=db[date]
+    userdata = get_user_data(user_id)
+    allword = userdata[date]
     return allword
 
 def print_allword(data):
-    cursor=data.find({})
+    cursor = data.find({})
     for doc in cursor:
         print(doc)
 
 def add_word(data,id,english,chinese,pronunciation):
-    result=data.insert_one({
-        "id":id,
-        "english":english,
-        "chinese":chinese,
-        "pronunciation":pronunciation,
+    result = data.insert_one({
+        "id": id,
+        "english": english,
+        "chinese": chinese,
+        "pronunciation": pronunciation,
     })
     print("資料新增成功!id="+str(result.inserted_id))
 
@@ -37,6 +36,21 @@ def delete_allword(data):
 def get_word(data,id):
     word=data.find_one({"id":id})
     return word
+
+def get_word_id(user_id):
+    userdata = get_user_data(user_id)
+    data = userdata["word counter"]
+    counter_record = data.find_one({})
+    if counter_record and 'counter' in counter_record:
+        new_counter = counter_record['counter'] + 1
+        data.update_one({}, {'$set': {'counter': new_counter}})
+        return new_counter
+    else:
+        data.insert_one({'counter': 1})
+        return 1
+
+
+
 
 
 

@@ -29,7 +29,7 @@ chi = ''
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
-    global mode, chi, eng
+    global mode, chi, eng, id
     print("exe callback")
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
@@ -44,7 +44,7 @@ def callback():
 # 訊息傳遞區塊
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    global mode, chi, eng
+    global mode, chi, eng, id
     msg=event.message.text
     profile = line_bot_api.get_profile(event.source.user_id)
     user_name = profile.display_name
@@ -116,8 +116,9 @@ def handle_message(event):
             print(mode)
         elif msg == '[ 是 ]':
             today = datetime.date.today()
+            id = id + 1
             data=mongodb.get_oneday_data(user_id,str(today))
-            mongodb.add_word(data,55,eng,chi,"urlll")
+            mongodb.add_word(data,mongodb.get_word_id,eng,chi,"urlll")
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='已成功輸入！'))
             mode = 1.1
             eng = chi = ''
