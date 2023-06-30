@@ -52,10 +52,10 @@ def handle_message(event):
     print(msg,user_name,user_id)
 
     if mode == 0:
-        if msg == '[ 輸入單字 ]':
+        if msg == '[ 輸入模式 ]':
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='請開始輸入'))
             mode = 1.1 # 進入輸入模式    
-        elif  msg == '[ 查詢單字 ]':
+        elif  msg == '[ 查詢模式 ]':
             # 跳出要查詢的時間選項
             message=TextSendMessage(
                 text='你要查詢哪一天的內容？',
@@ -69,7 +69,7 @@ def handle_message(event):
             )
             line_bot_api.reply_message(event.reply_token,message)
             mode = 2 # 進入查詢模式
-        elif  msg == '[ 我要測驗 ]':
+        elif  msg == '[ 測驗模式 ]':
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你要測驗的範圍是？'))
             # 跳出要考試的範圍選項
             message=TextSendMessage(
@@ -83,11 +83,10 @@ def handle_message(event):
                 )
             )
             line_bot_api.reply_message(event.reply_token,message)
-            # 進入測驗模式
-            mode = 3
+            mode = 3 # 進入測驗模式
 
     elif mode == 1.1:
-        if msg == '[ 輸入單字 ]':
+        if msg == '[ 輸入模式 ]':
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束輸入'))
             mode = 0 # 返回一般模式
         else:
@@ -110,7 +109,7 @@ def handle_message(event):
                 print(mode,eng,chi)
 
     elif mode == 1.2:
-        if msg == '[ 輸入單字 ]':
+        if msg == '[ 輸入模式 ]':
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束輸入'))
             mode = 0 # 返回一般模式
         elif msg == '[ 是 ]':
@@ -146,14 +145,14 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非中文，請重新輸入'))
     
     elif mode == 2:
-        if  msg == '[ 查詢單字 ]':
+        if  msg == '[ 查詢模式 ]':
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束查詢'))
             mode = 0 # 返回一般模式
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='mode2未完成'))
     
     elif mode == 3:
-        if  msg == '[ 測驗單字 ]':
+        if  msg == '[ 測驗模式 ]':
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束查詢'))
             mode = 0 # 返回一般模式
         else:
