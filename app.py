@@ -20,7 +20,7 @@ app = Flask(__name__)
 
 line_bot_api = LineBotApi(os.getenv('CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
-line_bot_api.push_message(os.getenv('MY_USER_ID'), TextSendMessage(text='系統有更新！'))
+line_bot_api.push_message(os.getenv('MY_USER_ID'), TextSendMessage(text='系統已就緒！'))
 mode = 0  # 0:一般模式  1.1:輸入英文模式 1.2:輸入中文模式 2:查詢模式  3:測驗模式
 eng = ''
 chi = ''
@@ -53,7 +53,7 @@ def handle_message(event):
 
     if mode == 0:
         if msg == '[ 輸入模式 ]':
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='請開始輸入'))
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='進入輸入模式，請開始輸入英文單字'))
             mode = 1.1 # 進入輸入模式    
         elif  msg == '[ 查詢模式 ]':
             # 跳出要查詢的時間選項
@@ -116,9 +116,10 @@ def handle_message(event):
             print(mode)
         elif msg == '[ 是 ]':
             today = datetime.date.today()
+            print(today)
             data=mongodb.get_oneday_data(user_id,str(today))
             mongodb.add_word(data,mongodb.get_word_id(user_id),eng,chi,"urlll")
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='已成功輸入！'))
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='已成功輸入！請繼續輸入英文單字'))
             mode = 1.1
             eng = chi = ''
             print(mode,eng,chi)
