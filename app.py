@@ -118,7 +118,7 @@ def handle_message(event):
             today = datetime.date.today()
             id = id + 1
             data=mongodb.get_oneday_data(user_id,str(today))
-            mongodb.add_word(data,mongodb.get_word_id,eng,chi,"urlll")
+            mongodb.add_word(data,mongodb.get_word_id(user_id),eng,chi,"urlll")
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='已成功輸入！'))
             mode = 1.1
             eng = chi = ''
