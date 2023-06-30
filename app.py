@@ -69,8 +69,8 @@ def handle_message(event):
             )
             line_bot_api.reply_message(event.reply_token,message)
             mode = 2 # 進入查詢模式
+            print(mode)
         elif  msg == '[ 測驗模式 ]':
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='你要測驗的範圍是？'))
             # 跳出要考試的範圍選項
             message=TextSendMessage(
                 text='你要測驗的範圍是？',
@@ -84,6 +84,7 @@ def handle_message(event):
             )
             line_bot_api.reply_message(event.reply_token,message)
             mode = 3 # 進入測驗模式
+            print(mode)
 
     elif mode == 1.1:
         if msg == '[ 輸入模式 ]':
@@ -112,6 +113,7 @@ def handle_message(event):
         if msg == '[ 輸入模式 ]':
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束輸入'))
             mode = 0 # 返回一般模式
+            print(mode)
         elif msg == '[ 是 ]':
             today = datetime.date.today()
             data=mongodb.get_oneday_data(user_id,str(today))
@@ -148,13 +150,15 @@ def handle_message(event):
         if  msg == '[ 查詢模式 ]':
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束查詢'))
             mode = 0 # 返回一般模式
+            print(mode)
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='mode2未完成'))
     
     elif mode == 3:
         if  msg == '[ 測驗模式 ]':
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束查詢'))
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束測驗'))
             mode = 0 # 返回一般模式
+            print(mode)
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='mode3未完成'))
     
