@@ -3,7 +3,7 @@ from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import *
 from pymongo.mongo_client import MongoClient
-import os, mongodb, vocabulary, nltk, requests, datetime, pytz
+import os, mongodb, vocabulary, nltk, requests, datetime, pytz, json
 
 # import configparser
 # config = configparser.ConfigParser()
@@ -24,6 +24,9 @@ line_bot_api.push_message(os.getenv('MY_USER_ID'), TextSendMessage(text='系統�
 mode = 0  # 0:一般模式  1.1:輸入英文模式 1.2:輸入中文模式 2:查詢模式  3:測驗模式
 eng = ''
 chi = ''
+
+with open('flex_message.json', 'r') as f:
+    flex_message_json = json.load(f)
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -130,7 +133,7 @@ def handle_message(event):
             message = TemplateSendMessage(
                 alt_text='確認按鈕',
                 template=ConfirmTemplate(
-                    text='「'+eng+'」的中文為「'+chi+'」？',
+                    text='將「'+eng+'」的中文設定為「'+chi+'」？',
                     actions=[
                         MessageTemplateAction(
                             label = '是',
@@ -152,6 +155,9 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束查詢'))
             mode = 0 # 返回一般模式
             print(mode)
+        elif msg == '[ 查詢今日單字 ]':
+            flex_message = FlexSendMessage(alt_text='Flex Message', contents=flex_message_json)
+            line_bot_api.reply_message(event.reply_token, flex_message)
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='mode2未完成'))
     
