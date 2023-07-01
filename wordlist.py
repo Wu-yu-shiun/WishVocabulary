@@ -30,25 +30,25 @@ def write_flex_message(user_id, date):
                     "layout": "baseline",
                     "spacing": "sm",
                     "contents": [
-                    {
-                        "type": "text",
-                        "text": "輸入英文",
-                        "color": "#aaaaaa",
-                        "size": "sm",
-                        "flex": 3,
-                        "margin": "md",
-                        "weight": "regular",
-                        "align": "start"
-                    },
-                    {
-                        "type": "text",
-                        "text": "輸入中文",
-                        "wrap": True,
-                        "color": "#666666",
-                        "size": "sm",
-                        "flex": 2,
-                        "margin": "md"
-                    }
+                        {
+                            "type": "text",
+                            "text": data['english'],
+                            "color": "#aaaaaa",
+                            "size": "sm",
+                            "flex": 3,
+                            "margin": "md",
+                            "weight": "regular",
+                            "align": "start"
+                        },
+                        {
+                            "type": "text",
+                            "text": data['chinese'],
+                            "wrap": True,
+                            "color": "#666666",
+                            "size": "sm",
+                            "flex": 2,
+                            "margin": "md"
+                        }
                     ],
                     "borderWidth": "normal",
                     "borderColor": "#000000",
