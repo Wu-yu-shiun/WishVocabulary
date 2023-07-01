@@ -2,8 +2,6 @@ import json
 import mongodb
 
 def write_flex_message(user_id, date):
-    print(user_id, date)
-
     with open('flex_message_module.json', 'r') as file: #  開啟flex_message.json檔
         template = json.load(file)
 
@@ -11,9 +9,10 @@ def write_flex_message(user_id, date):
     print("標題改為日期ok")
 
     word_list=mongodb.get_oneday_data(user_id, date).find({}) # 取得當日資料
-
+    print("-----------------")
     contents = []
     for data in word_list:
+        print(data)
         content = {
             "type": "box",
             "layout": "baseline",
