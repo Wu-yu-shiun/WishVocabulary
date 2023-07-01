@@ -3,7 +3,7 @@ from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import *
 from pymongo.mongo_client import MongoClient
-import os, mongodb, vocabulary, nltk, requests, datetime
+import os, mongodb, vocabulary, nltk, requests, datetime, pytz
 
 # import configparser
 # config = configparser.ConfigParser()
@@ -115,9 +115,9 @@ def handle_message(event):
             mode = 0 # 返回一般模式
             print(mode)
         elif msg == '[ 是 ]':
-            today = datetime.date.today()
-            print(today)
-            data=mongodb.get_oneday_data(user_id,str(today))
+            local_timezone = pytz.timezone('Asia/Taipei')
+            local_date = datetime.datetime.now(local_timezone).date()
+            data=mongodb.get_oneday_data(user_id,str(local_date))
             mongodb.add_word(data,mongodb.get_word_id(user_id),eng,chi,"urlll")
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='已成功輸入！請繼續輸入英文單字'))
             mode = 1.1
