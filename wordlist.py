@@ -2,6 +2,8 @@ import json
 import mongodb
 
 def write_flex_message(user_id, date):
+    print(user_id, date)
+
     with open('flex_message_module.json', 'r') as file: #  開啟flex_message.json檔
         template = json.load(file)
 

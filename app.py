@@ -155,7 +155,7 @@ def handle_message(event):
             mode = 0 # 返回一般模式
             print(mode)
         elif msg == '[ 查詢今日單字 ]':
-            flex_message = FlexSendMessage(alt_text='Flex Message', contents=wordlist.write_flex_message(user_id, local_date))
+            flex_message = FlexSendMessage(alt_text='Flex Message', contents=wordlist.write_flex_message(user_id, str(local_date)))
             line_bot_api.reply_message(event.reply_token, flex_message)
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='mode2未完成'))
