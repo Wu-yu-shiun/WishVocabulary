@@ -149,7 +149,9 @@ def handle_message(event):
             json_data = json.loads(wordlist.write_flex_message(user_id, str(local_datetime.date())))
             flex_message = FlexSendMessage(alt_text='Flex Message', contents=json_data)
             line_bot_api.reply_message(event.reply_token, flex_message)
+            print("-----------------------------")
             mode = jump_to_mode(event,0,'結束查詢')
+            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         elif msg == '[ 查詢昨天單字 ]':
             previous_datetime = local_datetime - datetime.timedelta(days=1)
             json_data = json.loads(wordlist.write_flex_message(user_id, str(previous_datetime.date())))
