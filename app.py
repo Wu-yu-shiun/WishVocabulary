@@ -190,6 +190,7 @@ def handle_message(event):
         
 # 返回一般模式
 def jump_to_mode(event,num,str):
+    print("hahaha")
     line_bot_api.reply_message(event.reply_token,TextSendMessage(text=str))
     print(num)
     return num
