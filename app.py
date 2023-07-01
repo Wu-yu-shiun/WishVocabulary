@@ -48,8 +48,8 @@ def handle_message(event):
     profile = line_bot_api.get_profile(event.source.user_id)
     user_name = profile.display_name
     user_id = profile.user_id
-    local_date = datetime.datetime.now(pytz.timezone('Asia/Taipei')).date()
-    print(msg, user_name, user_id, local_date)
+    local_datetime = datetime.datetime.now(pytz.timezone('Asia/Taipei'))
+    print(msg, user_name, user_id, local_datetime)
 
     if mode == 0:
         if msg == '[ 輸入模式 ]':
@@ -61,8 +61,9 @@ def handle_message(event):
                 text='你要查詢哪一天的內容？',
                 quick_reply=QuickReply(
                     items=[
-                        QuickReplyButton(action=MessageAction(label="今日",text="[ 查詢今日單字 ]")),
-                        QuickReplyButton(action=MessageAction(label="昨日",text="[ 查詢昨日單字 ]")),
+                        QuickReplyButton(action=MessageAction(label="今天",text="[ 查詢今天單字 ]")),
+                        QuickReplyButton(action=MessageAction(label="昨天",text="[ 查詢昨天單字 ]")),
+                        QuickReplyButton(action=MessageAction(label="前天",text="[ 查詢前天單字 ]")),
                         QuickReplyButton(action=MessageAction(label="全部",text="[ 查詢全部單字 ]")),
                     ]
                 )
@@ -76,8 +77,8 @@ def handle_message(event):
                 text='你要測驗的範圍是？',
                 quick_reply=QuickReply(
                     items=[
-                        QuickReplyButton(action=MessageAction(label="今日",text="[ 測驗今日單字 ]")),
-                        QuickReplyButton(action=MessageAction(label="最近3日",text="[ 測驗最近3日單字 ]")),
+                        QuickReplyButton(action=MessageAction(label="今天",text="[ 測驗今天單字 ]")),
+                        QuickReplyButton(action=MessageAction(label="最近3天",text="[ 測驗最近3天單字 ]")),
                         QuickReplyButton(action=MessageAction(label="全部",text="[ 測驗全部單字 ]")),
                     ]
                 )
@@ -115,7 +116,7 @@ def handle_message(event):
             mode = 0 # 返回一般模式
             print(mode)
         elif msg == '[ 是 ]':
-            data=mongodb.get_oneday_data(user_id,str(local_date))
+            data=mongodb.get_oneday_data(user_id,str(local_datetime.date()))
             mongodb.add_word(data,mongodb.get_word_id(user_id),eng,chi,"urlll")
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='已成功輸入！請繼續輸入英文單字'))
             mode = 1.1
@@ -150,10 +151,22 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束查詢'))
             mode = 0 # 返回一般模式
             print(mode)
-        elif msg == '[ 查詢今日單字 ]':
-            json_data = json.loads(wordlist.write_flex_message(user_id, str(local_date)))
+        elif msg == '[ 查詢今天單字 ]':
+            json_data = json.loads(wordlist.write_flex_message(user_id, str(local_datetime.date())))
             flex_message = FlexSendMessage(alt_text='Flex Message', contents=json_data)
             line_bot_api.reply_message(event.reply_token, flex_message)
+        elif msg == '[ 查詢昨天單字 ]':
+            previous_datetime = local_datetime - datetime.timedelta(days=1)
+            json_data = json.loads(wordlist.write_flex_message(user_id, str(previous_datetime.date())))
+            flex_message = FlexSendMessage(alt_text='Flex Message', contents=json_data)
+            line_bot_api.reply_message(event.reply_token, flex_message)
+        elif msg == '[ 查詢前天單字 ]':
+            previous_datetime = local_datetime - datetime.timedelta(days=2)
+            json_data = json.loads(wordlist.write_flex_message(user_id, str(previous_datetime.date())))
+            flex_message = FlexSendMessage(alt_text='Flex Message', contents=json_data)
+            line_bot_api.reply_message(event.reply_token, flex_message)
+        elif msg == '[ 查詢全部單字 ]':
+            pass   
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='mode2未完成'))
 
