@@ -53,8 +53,7 @@ def handle_message(event):
 
     if mode == 0:
         if msg == '[ 輸入模式 ]':
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='進入輸入模式，請開始輸入英文單字'))
-            mode = 1.1 # 進入輸入模式    
+            jump_to_mode(event,1.1,'進入輸入模式，請開始輸入英文單字') # 進入輸入模式  
         elif  msg == '[ 查詢模式 ]':
             # 跳出要查詢的時間選項
             message=TextSendMessage(
@@ -89,8 +88,7 @@ def handle_message(event):
 
     elif mode == 1.1:
         if msg == '[ 輸入模式 ]':
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束輸入'))
-            mode = 0 # 返回一般模式
+            jump_to_mode(event,0,'結束輸入')
         else:
             result=vocabulary.deal_word(msg)
             if result is None:
@@ -112,9 +110,7 @@ def handle_message(event):
 
     elif mode == 1.2:
         if msg == '[ 輸入模式 ]':
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束輸入'))
-            mode = 0 # 返回一般模式
-            print(mode)
+            jump_to_mode(event,0,'結束輸入')
         elif msg == '[ 是 ]':
             data=mongodb.get_oneday_data(user_id,str(local_datetime.date()))
             mongodb.add_word(data,mongodb.get_word_id(user_id),eng,chi,"urlll")
@@ -151,37 +147,34 @@ def handle_message(event):
             json_data = json.loads(wordlist.write_flex_message(user_id, str(local_datetime.date())))
             flex_message = FlexSendMessage(alt_text='Flex Message', contents=json_data)
             line_bot_api.reply_message(event.reply_token, flex_message)
+            jump_to_mode(event,0,'結束查詢')
         elif msg == '[ 查詢昨天單字 ]':
             previous_datetime = local_datetime - datetime.timedelta(days=1)
             json_data = json.loads(wordlist.write_flex_message(user_id, str(previous_datetime.date())))
             flex_message = FlexSendMessage(alt_text='Flex Message', contents=json_data)
             line_bot_api.reply_message(event.reply_token, flex_message)
+            jump_to_mode(event,0,'結束查詢')
         elif msg == '[ 查詢前天單字 ]':
             previous_datetime = local_datetime - datetime.timedelta(days=2)
             json_data = json.loads(wordlist.write_flex_message(user_id, str(previous_datetime.date())))
             flex_message = FlexSendMessage(alt_text='Flex Message', contents=json_data)
             line_bot_api.reply_message(event.reply_token, flex_message)
+            jump_to_mode(event,0,'結束查詢')
         elif msg == '[ 查詢全部單字 ]':
             pass   
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非查詢指令'))
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束查詢'))
-        mode = 0 # 返回一般模式
-        print(mode)
+            jump_to_mode(event,0,'結束查詢')
 
     elif mode == 2.2:
         if  msg == '[ 查詢模式 ]':
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束查詢'))
-            mode = 0 # 返回一般模式
-            print(mode)
+            jump_to_mode(event,0,'結束查詢')
         else:
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='進入修改模式'))
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='mode2.2未完成'))
 
     elif mode == 3:
         if  msg == '[ 測驗模式 ]':
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束測驗'))
-            mode = 0 # 返回一般模式
-            print(mode)
+            jump_to_mode(event,0,'結束測驗')
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='mode3未完成'))
     
@@ -191,6 +184,11 @@ def handle_message(event):
     else :
         pass
         
+# 返回一般模式
+def jump_to_mode(event,num,str):
+    line_bot_api.reply_message(event.reply_token,TextSendMessage(text=str))
+    mode = num 
+    print(mode)
 
 # 主程式
 if __name__ == "__main__":
