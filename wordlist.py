@@ -33,11 +33,11 @@ def write_flex_message(user_id, date):
                         {
                             "type": "text",
                             "text": data['english'],
+                            "wrap": True,
                             "color": "#000000",
                             "size": "sm",
                             "flex": 3,
                             "margin": "md",
-                            "align": "start",
                             "weight": "bold"
                         },
                         {
@@ -47,7 +47,8 @@ def write_flex_message(user_id, date):
                             "color": "#000000",
                             "size": "sm",
                             "flex": 2,
-                            "margin": "md"
+                            "margin": "md",
+                            "weight": "bold"
                         }
                     ],
                     "borderWidth": "normal",
