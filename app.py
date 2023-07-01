@@ -25,10 +25,6 @@ mode = 0  # 0:一般模式  1.1:輸入英文模式 1.2:輸入中文模式 2.1:�
 eng = ''
 chi = ''
 
-with open('flex_message.json', 'r') as f:
-    flex_message_json = json.load(f)
-
-
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
