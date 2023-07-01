@@ -25,8 +25,8 @@ mode = 0  # 0:一般模式  1.1:輸入英文模式 1.2:輸入中文模式 2.1:�
 eng = ''
 chi = ''
 
-# with open('flex_message.json', 'r') as f:
-#     flex_message_json = json.load(f)
+with open('flex_message.json', 'r') as f:
+    flex_message_json = json.load(f)
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -52,7 +52,8 @@ def handle_message(event):
     profile = line_bot_api.get_profile(event.source.user_id)
     user_name = profile.display_name
     user_id = profile.user_id
-    print(msg,user_name,user_id)
+    local_date = datetime.datetime.now(pytz.timezone('Asia/Taipei')).date()
+    print(msg, user_name, user_id, local_date)
 
     if mode == 0:
         if msg == '[ 輸入模式 ]':
@@ -118,8 +119,6 @@ def handle_message(event):
             mode = 0 # 返回一般模式
             print(mode)
         elif msg == '[ 是 ]':
-            local_timezone = pytz.timezone('Asia/Taipei')
-            local_date = datetime.datetime.now(local_timezone).date()
             data=mongodb.get_oneday_data(user_id,str(local_date))
             mongodb.add_word(data,mongodb.get_word_id(user_id),eng,chi,"urlll")
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='已成功輸入！請繼續輸入英文單字'))
@@ -156,7 +155,7 @@ def handle_message(event):
             mode = 0 # 返回一般模式
             print(mode)
         elif msg == '[ 查詢今日單字 ]':
-            flex_message = FlexSendMessage(alt_text='Flex Message', contents=wordlist.original_json)
+            flex_message = FlexSendMessage(alt_text='Flex Message', contents=wordlist.write_flex_message(user_id, local_date))
             line_bot_api.reply_message(event.reply_token, flex_message)
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='mode2未完成'))
