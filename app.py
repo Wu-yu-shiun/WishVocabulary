@@ -88,7 +88,7 @@ def handle_message(event):
 
     elif mode == 1.1:
         if msg == '[ 輸入模式 ]':
-            jump_to_mode(event,0,'結束輸入')
+            mode = jump_to_mode(event,0,'結束輸入')
         else:
             result=vocabulary.deal_word(msg)
             if result is None:
