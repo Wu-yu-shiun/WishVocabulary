@@ -143,7 +143,9 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非中文，請重新輸入'))
     
     elif mode == 2.1:
-        if msg == '[ 查詢今天單字 ]':
+        if msg == '[ 查詢模式 ]':
+            mode = jump_to_mode(event,0,'結束查詢')
+        elif msg == '[ 查詢今天單字 ]':
             json_data = json.loads(wordlist.write_flex_message(user_id, str(local_datetime.date())))
             flex_message = FlexSendMessage(alt_text='Flex Message', contents=json_data)
             line_bot_api.reply_message(event.reply_token, flex_message)
