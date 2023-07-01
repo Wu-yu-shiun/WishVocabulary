@@ -3,8 +3,8 @@ from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import *
 from pymongo.mongo_client import MongoClient
-import os, mongodb, vocabulary, nltk, requests, datetime, pytz, json
-
+import os, nltk, requests, datetime, pytz, json
+import mongodb, vocabulary, wordlist
 # import configparser
 # config = configparser.ConfigParser()
 # config.read("config.ini")
@@ -21,12 +21,12 @@ app = Flask(__name__)
 line_bot_api = LineBotApi(os.getenv('CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 line_bot_api.push_message(os.getenv('MY_USER_ID'), TextSendMessage(text='系統已就緒！'))
-mode = 0  # 0:一般模式  1.1:輸入英文模式 1.2:輸入中文模式 2:查詢模式  3:測驗模式
+mode = 0  # 0:一般模式  1.1:輸入英文模式 1.2:輸入中文模式 2.1:查詢模式 2.2:修改模式 3:測驗模式
 eng = ''
 chi = ''
 
-with open('flex_message.json', 'r') as f:
-    flex_message_json = json.load(f)
+# with open('flex_message.json', 'r') as f:
+#     flex_message_json = json.load(f)
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -71,7 +71,7 @@ def handle_message(event):
                 )
             )
             line_bot_api.reply_message(event.reply_token,message)
-            mode = 2 # 進入查詢模式
+            mode = 2.1 # 進入查詢模式
             print(mode)
         elif  msg == '[ 測驗模式 ]':
             # 跳出要考試的範圍選項
@@ -150,17 +150,25 @@ def handle_message(event):
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非中文，請重新輸入'))
     
-    elif mode == 2:
+    elif mode == 2.1:
         if  msg == '[ 查詢模式 ]':
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束查詢'))
             mode = 0 # 返回一般模式
             print(mode)
         elif msg == '[ 查詢今日單字 ]':
-            flex_message = FlexSendMessage(alt_text='Flex Message', contents=flex_message_json)
+            flex_message = FlexSendMessage(alt_text='Flex Message', contents=wordlist.original_json)
             line_bot_api.reply_message(event.reply_token, flex_message)
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='mode2未完成'))
-    
+
+    elif mode == 2.2:
+        if  msg == '[ 查詢模式 ]':
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束查詢'))
+            mode = 0 # 返回一般模式
+            print(mode)
+        else:
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='進入修改模式'))
+
     elif mode == 3:
         if  msg == '[ 測驗模式 ]':
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='結束測驗'))
@@ -170,9 +178,7 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='mode3未完成'))
     
     elif msg == 'wishhhh' :
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="test"))
-        data=mongodb.get_oneday_data("test","db_230629")
-        mongodb.add_word(data,55,"ant","螞蟻","urlll")
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="password"))
     
     else :
         pass
