@@ -68,6 +68,7 @@ def handle_message(event):
                 )
             )
             line_bot_api.reply_message(event.reply_token,message)
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='來')) ####
             mode = 2.1 # 進入查詢模式
             print(mode)
         elif  msg == '[ 測驗模式 ]':
@@ -83,6 +84,7 @@ def handle_message(event):
                 )
             )
             line_bot_api.reply_message(event.reply_token,message)
+
             mode = 3 # 進入測驗模式
             print(mode)
 
@@ -93,6 +95,7 @@ def handle_message(event):
             result=vocabulary.deal_word(msg)
             if result is None:
                 line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非英文單字'))
+                line_bot_api.reply_message(event.reply_token,TextSendMessage(text='去')) ####
             else :
                 message=TextSendMessage(
                     text='請輸入單字的中文',
