@@ -28,8 +28,8 @@ chi = ''
 # 監聽所有來自 /callback 的 Post Request
 @app.route("/callback", methods=['POST'])
 def callback():
-    global mode, chi, eng, id
-    print("exe callback")
+    global mode, chi, eng
+    print("exe callback") ###
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
@@ -43,13 +43,13 @@ def callback():
 # 訊息傳遞區塊
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    global mode, chi, eng, id
+    global mode, chi, eng
     msg=event.message.text
     profile = line_bot_api.get_profile(event.source.user_id)
     user_name = profile.display_name
     user_id = profile.user_id
     local_datetime = datetime.datetime.now(pytz.timezone('Asia/Taipei'))
-    print(msg, user_name, user_id, local_datetime)
+    print(msg, user_name, user_id, local_datetime) ###
 
     if mode == 0:
         if msg == '[ 輸入模式 ]':
@@ -68,9 +68,8 @@ def handle_message(event):
                 )
             )
             line_bot_api.reply_message(event.reply_token,message)
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='來')) ####
             mode = 2.1 # 進入查詢模式
-            print(mode)
+            print(mode) ###
         elif  msg == '[ 測驗模式 ]':
             # 跳出要考試的範圍選項
             message=TextSendMessage(
@@ -84,9 +83,8 @@ def handle_message(event):
                 )
             )
             line_bot_api.reply_message(event.reply_token,message)
-
             mode = 3 # 進入測驗模式
-            print(mode)
+            print(mode) ###
 
     elif mode == 1.1:
         if msg == '[ 輸入模式 ]':
@@ -95,7 +93,6 @@ def handle_message(event):
             result=vocabulary.deal_word(msg)
             if result is None:
                 line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非英文單字'))
-                line_bot_api.reply_message(event.reply_token,TextSendMessage(text='去')) ####
             else :
                 message=TextSendMessage(
                     text='請輸入單字的中文',
@@ -109,7 +106,7 @@ def handle_message(event):
                 mode = 1.2
                 eng=msg
                 chi=result
-                print(mode,eng,chi)
+                print(mode,eng,chi) ###
 
     elif mode == 1.2:
         if msg == '[ 輸入模式 ]':
@@ -120,7 +117,7 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='已成功輸入！請繼續輸入英文單字'))
             mode = 1.1
             eng = chi = ''
-            print(mode,eng,chi)
+            print(mode,eng,chi) ###
         elif msg == '[ 否 ]':
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='請重新輸入單字的中文'))
         elif vocabulary.is_chinese_word(msg):
@@ -152,26 +149,20 @@ def handle_message(event):
             json_data = json.loads(wordlist.write_flex_message(user_id, str(local_datetime.date())))
             flex_message = FlexSendMessage(alt_text='Flex Message', contents=json_data)
             line_bot_api.reply_message(event.reply_token, flex_message)
-            print("-----------------------------")
-            mode = jump_to_mode(event,0,'結束查詢')
-            print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         elif msg == '[ 查詢昨天單字 ]':
             previous_datetime = local_datetime - datetime.timedelta(days=1)
             json_data = json.loads(wordlist.write_flex_message(user_id, str(previous_datetime.date())))
             flex_message = FlexSendMessage(alt_text='Flex Message', contents=json_data)
             line_bot_api.reply_message(event.reply_token, flex_message)
-            mode = jump_to_mode(event,0,'結束查詢')
         elif msg == '[ 查詢前天單字 ]':
             previous_datetime = local_datetime - datetime.timedelta(days=2)
             json_data = json.loads(wordlist.write_flex_message(user_id, str(previous_datetime.date())))
             flex_message = FlexSendMessage(alt_text='Flex Message', contents=json_data)
             line_bot_api.reply_message(event.reply_token, flex_message)
-            mode = jump_to_mode(event,0,'結束查詢')
         elif msg == '[ 查詢全部單字 ]':
             pass   
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非查詢指令'))
-            mode = jump_to_mode(event,0,'結束查詢')
 
     elif mode == 2.2:
         if  msg == '[ 查詢模式 ]':
@@ -193,9 +184,8 @@ def handle_message(event):
         
 # 返回一般模式
 def jump_to_mode(event,num,str):
-    print("hahaha")
     line_bot_api.reply_message(event.reply_token,TextSendMessage(text=str))
-    print(num)
+    print(num) ###
     return num
 
 # 主程式
