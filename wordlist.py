@@ -33,11 +33,10 @@ def write_flex_message(user_id, date):
                         {
                             "type": "text",
                             "text": data['english'],
-                            "color": "#666666",
+                            "color": "#000000",
                             "size": "sm",
                             "flex": 3,
                             "margin": "md",
-                            "weight": "regular",
                             "align": "start",
                             "weight": "bold"
                         },
@@ -45,17 +44,18 @@ def write_flex_message(user_id, date):
                             "type": "text",
                             "text": data['chinese'],
                             "wrap": True,
-                            "color": "#666666",
+                            "color": "#000000",
                             "size": "sm",
                             "flex": 2,
                             "margin": "md"
                         }
                     ],
                     "borderWidth": "normal",
-                    "borderColor": "#000000",
+                    "borderColor": "#666666",
                     "margin": "none",
                     "height": "30px",
-                    "paddingTop": "3px"
+                    "paddingTop": "5px",
+                    "cornerRadius": "md"
                 }
             ]
         }
