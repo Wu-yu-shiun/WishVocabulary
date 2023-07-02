@@ -189,10 +189,10 @@ def handle_message(event):
             stage = choose_mode(event)
         elif msg == '[ 測驗最近3天單字 ]':
             quiz.word_to_pool(user_id, 0, 5) #取id=0-5的單字到測驗池
-            stage = choose_mode()
+            stage = choose_mode(event)
         elif msg == '[ 測驗全部單字 ]':
             quiz.word_to_pool(user_id, 0, 5) #取id=0-5的單字到測驗池
-            stage = choose_mode()
+            stage = choose_mode(event)
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非測驗指令！結束測驗'))
             stage = 0
