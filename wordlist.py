@@ -57,10 +57,9 @@ def write_flex_message(user_id, date):
                 }
             ],
             "action": {
-                "type": "datetimepicker",
+                "type": "message",
                 "label": "action",
-                "data": "hello",
-                "mode": "date"
+                "text": data['english'] + "怎麼念？"
             }
         }
         contents.append(content)

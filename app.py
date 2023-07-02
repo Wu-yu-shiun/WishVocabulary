@@ -3,8 +3,8 @@ from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import *
 from pymongo.mongo_client import MongoClient
-import os, nltk, requests, datetime, pytz, json
-import mongodb, vocabulary, wordlist
+import os, nltk, requests, datetime, pytz, json, re
+import mongodb, vocabulary, wordlist, pronounciation
 # import configparser
 # config = configparser.ConfigParser()
 # config.read("config.ini")
@@ -21,7 +21,7 @@ app = Flask(__name__)
 line_bot_api = LineBotApi(os.getenv('CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
 line_bot_api.push_message(os.getenv('MY_USER_ID'), TextSendMessage(text='系統已就緒！'))
-mode = 0  # 0:一般模式  1.1:輸入英文模式 1.2:輸入中文模式 2.1:查詢模式 2.2:修改模式 3:測驗模式
+mode = 0  # 0:一般模式(發音模式)  1.1:輸入英文模式 1.2:輸入中文模式 2.1:查詢＋發音模式 2.2:修改模式 3:測驗模式
 eng = ''
 chi = ''
 
@@ -85,6 +85,12 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,message)
             mode = 3 # 進入測驗模式
             print(mode) ###
+        else:
+            str1, str2 = split_pronounciation_command(msg)
+            if ( vocabulary.is_english_word(str1) and str2 == '怎麼念？' ):
+                pronounciation.get_word_audio_url(str1)
+            else:
+                line_bot_api.reply_message(event.reply_token,TextSendMessage(text="請從選單點選要進入的模式"))
 
     elif mode == 1.1:
         if msg == '[ 輸入模式 ]':
@@ -181,17 +187,24 @@ def handle_message(event):
         else:
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='mode3未完成'))
     
-    elif msg == 'wishhhh' :
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="password"))
-    
-    else :
-        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="請從選單點選要進入的模式"))
         
 # 返回一般模式
 def jump_to_mode(event,num,str):
     line_bot_api.reply_message(event.reply_token,TextSendMessage(text=str))
     print(num) ###
     return num
+
+# 切割發音指令
+def split_pronounciation_command(str):
+    matches = re.search(r"[^a-zA-Z]", str)  
+    if matches:
+        index = matches.start()  
+        str1 = str[:index]  
+        str2 = str[index:] 
+    else:
+        str1 = str 
+        str2 = ""
+    return str1, str2
 
 # 主程式
 if __name__ == "__main__":
