@@ -57,9 +57,9 @@ def write_flex_message(user_id, date):
                 }
             ],
             "action": {
-                  "type": "uri",
-                  "label": "action",
-                  "uri": "http://linecorp.com/"
+                "type": "message",
+                "label": "action",
+                "text": "hello"
             }
         }
         contents.append(content)
