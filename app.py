@@ -87,10 +87,18 @@ def handle_message(event):
             print(mode) ###
         else:
             str1, str2 = split_pronounciation_command(msg)
+            print(str1, str2) ###
             if ( vocabulary.is_english_word(str1) and str2 == '怎麼念？' ):
-                pronounciation.get_word_audio_url(str1)
+                url = pronounciation.get_word_audio_url(str1)
+                try:
+                    message = AudioSendMessage(
+                        original_content_url = url 
+                    )
+                    line_bot_api.reply_message(event.reply_token, message)
+                except:
+                    line_bot_api.reply_message(event.reply_token, TextSendMessage(text="語音訊息取得失敗！"))
             else:
-                line_bot_api.reply_message(event.reply_token,TextSendMessage(text="請從選單點選要進入的模式"))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請從選單點選要進入的模式"))
 
     elif mode == 1.1:
         if msg == '[ 輸入模式 ]':
@@ -98,7 +106,7 @@ def handle_message(event):
         else:
             result=vocabulary.deal_word(msg)
             if result is None:
-                line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非英文單字'))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='您的輸入並非英文單字'))
             else :
                 message=TextSendMessage(
                     text='請輸入單字的中文',
