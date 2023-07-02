@@ -218,15 +218,19 @@ def handle_message(event):
 
     elif stage == 3.31:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='stage3.31未完成'))
+        stage = 0
 
     elif stage == 3.32:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='stage3.32未完成'))
+        stage = 0
 
     elif stage == 3.33:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='stage3.33未完成'))
+        stage = 0
         
     elif stage == 3.34:
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text='stage3.34未完成'))
+        stage = 0
     
         
 # 返回一般模式
