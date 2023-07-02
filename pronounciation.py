@@ -9,7 +9,7 @@ def get_word_audio_url(word):
     audio_url = "https://media.merriam-webster.com/audio/prons/en/us/mp3/"+word[0].lower()+"/"+str(audio)+".mp3"
     return audio_url
 
-# word = "Pig"
+# word = "Good"
 # audio_url = get_word_audio_url(word)
 # print("单词的发音URL:", audio_url)
 

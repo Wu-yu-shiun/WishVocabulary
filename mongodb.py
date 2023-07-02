@@ -52,9 +52,6 @@ def get_word_id(user_id):
 
 
 
-
-
-
 # data=get_oneday_data("test","db_230630")
 # for i in range(1, 8):
 #     add_word(data,i,"ant","螞蟻","urlll")
