@@ -89,10 +89,12 @@ def handle_message(event):
             str1, str2 = split_pronounciation_command(msg)
             print(str1, str2) ###
             if ( vocabulary.is_english_word(str1) and str2 == '怎麼念？' ):
-                url = pronounciation.get_word_audio_url(str1)
                 try:
+                    url = pronounciation.get_word_audio_url(str1)
+                    print(url) ###
                     message = AudioSendMessage(
-                        original_content_url = url 
+                        original_content_url = url,
+                        duration = 2000
                     )
                     line_bot_api.reply_message(event.reply_token, message)
                 except:
