@@ -149,20 +149,25 @@ def handle_message(event):
             json_data = json.loads(wordlist.write_flex_message(user_id, str(local_datetime.date())))
             flex_message = FlexSendMessage(alt_text='Flex Message', contents=json_data)
             line_bot_api.reply_message(event.reply_token, flex_message)
+            mode = 0
         elif msg == '[ 查詢昨天單字 ]':
             previous_datetime = local_datetime - datetime.timedelta(days=1)
             json_data = json.loads(wordlist.write_flex_message(user_id, str(previous_datetime.date())))
             flex_message = FlexSendMessage(alt_text='Flex Message', contents=json_data)
             line_bot_api.reply_message(event.reply_token, flex_message)
+            mode = 0
         elif msg == '[ 查詢前天單字 ]':
             previous_datetime = local_datetime - datetime.timedelta(days=2)
             json_data = json.loads(wordlist.write_flex_message(user_id, str(previous_datetime.date())))
             flex_message = FlexSendMessage(alt_text='Flex Message', contents=json_data)
             line_bot_api.reply_message(event.reply_token, flex_message)
+            mode = 0
         elif msg == '[ 查詢全部單字 ]':
-            pass   
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='此功能未完成'))
+            mode = 0  
         else:
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非查詢指令'))
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非查詢指令，結束查詢'))
+            mode = 0
 
     elif mode == 2.2:
         if  msg == '[ 查詢模式 ]':
