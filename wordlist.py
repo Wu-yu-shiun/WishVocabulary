@@ -57,10 +57,10 @@ def write_flex_message(user_id, date):
                 }
             ],
             "action": {
-                "type": "postback",
+                "type": "datetimepicker",
                 "label": "action",
                 "data": "hello",
-                "displayText": "haha"
+                "mode": "date"
             }
         }
         contents.append(content)
