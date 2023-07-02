@@ -5,8 +5,6 @@ def write_flex_message(user_id, date):
     with open('flex_message_module.json', 'r') as file: #  開啟flex_message.json檔
         template = json.load(file)
 
-    # template['body']['contents'][0]['text'] = date  # 標題改為日期
-    # print("標題改為日期ok")
     contents = []
     title =  {
         "type": "text",
@@ -18,7 +16,6 @@ def write_flex_message(user_id, date):
 
     word_list=mongodb.get_oneday_data(user_id, date).find({}) # 取得當日資料
     for data in word_list:
-        print(data)
         content = {
             "type": "box",
             "layout": "vertical",
@@ -58,7 +55,12 @@ def write_flex_message(user_id, date):
                     "paddingTop": "5px",
                     "cornerRadius": "md"
                 }
-            ]
+            ],
+            "action": {
+                  "type": "uri",
+                  "label": "action",
+                  "uri": "http://linecorp.com/"
+            }
         }
         contents.append(content)
 
@@ -67,5 +69,5 @@ def write_flex_message(user_id, date):
     json_data = json.dumps(template) # Python dic => json
     return json_data
 
-result=write_flex_message("Udb21c2cdfce57278db519a0b88153d82", "2023-07-01")
-print(result)
+# result=write_flex_message("Udb21c2cdfce57278db519a0b88153d82", "2023-07-01")
+# print(result)

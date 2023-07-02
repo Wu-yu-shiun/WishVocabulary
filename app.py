@@ -53,7 +53,7 @@ def handle_message(event):
 
     if mode == 0:
         if msg == '[ 輸入模式 ]':
-            mode = jump_to_mode(event,1.1,'進入輸入模式，請開始輸入英文單字') # 進入輸入模式  
+            mode = jump_to_mode(event,1.1,'進入輸入模式，請開始輸入英文單字(若想結束輸入，請再次點選輸入)') # 進入輸入模式  
         elif  msg == '[ 查詢模式 ]':
             # 跳出要查詢的時間選項
             message=TextSendMessage(
