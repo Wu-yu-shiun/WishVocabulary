@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 line_bot_api = LineBotApi(os.getenv('CHANNEL_ACCESS_TOKEN'))
 handler = WebhookHandler(os.getenv('CHANNEL_SECRET'))
-line_bot_api.push_message(os.getenv('MY_USER_ID'), TextSendMessage(text='系統已就緒！'))
+line_bot_api.push_message(os.getenv('MY_USER_ID'), TextSendMessage(text='系統已被喚醒！'))
 stage = 0  
 eng = ''
 chi = ''
@@ -47,7 +47,7 @@ def handle_message(event):
         elif  msg == '[ 查詢模式 ]':
             # 跳出要查詢的時間選項
             message=TextSendMessage(
-                text='你要查詢哪一天的內容？',
+                text='您要查詢哪一天的內容？',
                 quick_reply=QuickReply(
                     items=[
                         QuickReplyButton(action=MessageAction(label="今天",text="[ 查詢今天單字 ]")),
@@ -63,7 +63,7 @@ def handle_message(event):
         elif  msg == '[ 測驗模式 ]':
             # 跳出要考試的範圍選項
             message=TextSendMessage(
-                text='你要測驗的範圍是？',
+                text='您要測驗的範圍是？',
                 quick_reply=QuickReply(
                     items=[
                         QuickReplyButton(action=MessageAction(label="今天",text="[ 測驗今天單字 ]")),
@@ -187,10 +187,10 @@ def handle_message(event):
         elif msg == '[ 測驗今天單字 ]':
             quiz.word_to_pool(user_id, 0, 5) #取id=0-5的單字到測驗池
             stage = choose_mode(event)
-        elif msg == '[ 測驗今天單字 ]':
+        elif msg == '[ 測驗最近3天單字 ]':
             quiz.word_to_pool(user_id, 0, 5) #取id=0-5的單字到測驗池
             stage = choose_mode()
-        elif msg == '[ 測驗今天單字 ]':
+        elif msg == '[ 測驗全部單字 ]':
             quiz.word_to_pool(user_id, 0, 5) #取id=0-5的單字到測驗池
             stage = choose_mode()
         else:
@@ -254,7 +254,7 @@ def split_pronounciation_command(str):
 # 選取要考的方式
 def choose_mode(event):
     message=TextSendMessage(
-        text='你要測驗的模式是？\n模式A:依序考完\n模式B:隨機考10個\n模式C:隨機考10個+錯過的要答對才結束\n模式D:連續對5個才結束',
+        text='您要測驗的模式是？\n模式A:依序考完\n模式B:隨機考10個\n模式C:隨機考10個+錯過的要答對才結束\n模式D:連續對5個才結束',
         quick_reply=QuickReply(
             items=[
                 QuickReplyButton(action=MessageAction(label="模式A",text="[ 模式A ]")),
