@@ -94,7 +94,7 @@ def handle_message(event):
                     print(url) ###
                     message = AudioSendMessage(
                         original_content_url = url,
-                        duration = 2000
+                        duration = 10000
                     )
                     line_bot_api.reply_message(event.reply_token, message)
                 except:
