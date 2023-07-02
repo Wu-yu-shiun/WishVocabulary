@@ -59,7 +59,7 @@ def write_flex_message(user_id, date):
             "action": {
                 "type": "message",
                 "label": "action",
-                "text": data['english'] + "怎麼念？"
+                "text": data['english'] + "怎麼念"
             }
         }
         contents.append(content)

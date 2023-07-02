@@ -88,7 +88,7 @@ def handle_message(event):
         else:
             str1, str2 = split_pronounciation_command(msg)
             print(str1, str2) ###
-            if ( vocabulary.is_english_word(str1) and str2 == '怎麼念？' ):
+            if ( vocabulary.is_english_word(str1) and str2 == '怎麼念' ):
                 try:
                     url = pronounciation.get_word_audio_url(str1)
                     print(url) ###
@@ -100,7 +100,7 @@ def handle_message(event):
                 except:
                     line_bot_api.reply_message(event.reply_token, TextSendMessage(text="語音訊息取得失敗！"))
             else:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text="請從選單點選要進入的模式"))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text="查無指令，請從選單點選要進入的模式！"))
 
     elif mode == 1.1:
         if msg == '[ 輸入模式 ]':
@@ -108,7 +108,7 @@ def handle_message(event):
         else:
             result=vocabulary.deal_word(msg)
             if result is None:
-                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='您的輸入並非英文單字'))
+                line_bot_api.reply_message(event.reply_token, TextSendMessage(text='您的輸入並非英文單字！'))
             else :
                 message=TextSendMessage(
                     text='請輸入單字的中文',
@@ -156,7 +156,7 @@ def handle_message(event):
             )
             line_bot_api.reply_message(event.reply_token,message)
         else:
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非中文，請重新輸入'))
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非中文！請重新輸入'))
     
     elif mode == 2.1:
         if msg == '[ 查詢模式 ]':
@@ -182,7 +182,7 @@ def handle_message(event):
             line_bot_api.reply_message(event.reply_token,TextSendMessage(text='此功能未完成'))
             mode = 0  
         else:
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非查詢指令，結束查詢'))
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='您的輸入並非查詢指令！結束查詢'))
             mode = 0
 
     elif mode == 2.2:
