@@ -185,7 +185,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token,TextSendMessage(text="password"))
     
     else :
-        pass
+        line_bot_api.reply_message(event.reply_token,TextSendMessage(text="請從選單點選要進入的模式"))
         
 # 返回一般模式
 def jump_to_mode(event,num,str):

@@ -57,9 +57,10 @@ def write_flex_message(user_id, date):
                 }
             ],
             "action": {
-                "type": "message",
+                "type": "postback",
                 "label": "action",
-                "text": "hello"
+                "data": "hello",
+                "displayText": "haha"
             }
         }
         contents.append(content)
