@@ -3,7 +3,7 @@ from linebot import (LineBotApi, WebhookHandler)
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import *
 from pymongo.mongo_client import MongoClient
-import os, nltk, requests, datetime, pytz, json, re
+import os, datetime, pytz, json, re
 import mongodb, vocabulary, wordlist, pronounciation, quiz
 
 app = Flask(__name__)
@@ -120,7 +120,7 @@ def handle_message(event):
         elif msg == '[ 是 ]':
             data=mongodb.get_oneday_data(user_id,str(local_datetime.date()))
             mongodb.add_word(data,mongodb.get_word_id(user_id),eng,chi,"urlll")
-            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='已成功輸入！請繼續輸入英文單字'))
+            line_bot_api.reply_message(event.reply_token,TextSendMessage(text='已成功輸入！請繼續輸入英文單字(若想結束輸入，請再次在選單點選輸入)'))
             stage = 1.1
             eng = chi = ''
             print(stage,eng,chi) ###
